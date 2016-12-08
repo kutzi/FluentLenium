@@ -1,8 +1,8 @@
 package org.fluentlenium.integration;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import org.fluentlenium.core.FluentControl;
 import org.fluentlenium.core.FluentPage;
 import org.fluentlenium.core.domain.FluentList;
@@ -284,23 +284,13 @@ public class FluentLeniumWaitElementTest extends IntegrationFluentTest {
     @Test
     public void checkPredicate() {
         goTo(JAVASCRIPT_URL);
-        await().pollingEvery(800, TimeUnit.MILLISECONDS).untilPredicate(new Predicate<FluentControl>() {
-            @Override
-            public boolean apply(final FluentControl input) {
-                return true;
-            }
-        });
+        await().pollingEvery(800, TimeUnit.MILLISECONDS).untilPredicate(predicate -> true);
     }
 
     @Test(expected = TimeoutException.class)
     public void checkPredicateFail() {
         goTo(JAVASCRIPT_URL);
-        await().atMost(1000).untilPredicate(new Predicate<FluentControl>() {
-            @Override
-            public boolean apply(final FluentControl input) {
-                return false;
-            }
-        });
+        await().atMost(1000).untilPredicate(input -> false);
     }
 
     @Test
@@ -328,23 +318,13 @@ public class FluentLeniumWaitElementTest extends IntegrationFluentTest {
     @Test
     public void checkSupplier() {
         goTo(JAVASCRIPT_URL);
-        await().pollingEvery(1000, TimeUnit.MILLISECONDS).until(new Supplier<Boolean>() {
-            @Override
-            public Boolean get() {
-                return true;
-            }
-        });
+        await().pollingEvery(1000, TimeUnit.MILLISECONDS).until(() -> true);
     }
 
     @Test(expected = TimeoutException.class)
     public void checkSupplierFail() {
         goTo(JAVASCRIPT_URL);
-        await().atMost(1000).until(new Supplier<Boolean>() {
-            @Override
-            public Boolean get() {
-                return false;
-            }
-        });
+        await().atMost(1000).until(() -> false);
     }
 
     private static class MyFluentPage extends FluentPage {

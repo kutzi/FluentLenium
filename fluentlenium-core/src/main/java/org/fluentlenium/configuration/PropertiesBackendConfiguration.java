@@ -1,6 +1,5 @@
 package org.fluentlenium.configuration;
 
-import com.google.common.base.Strings;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -11,6 +10,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+
+import com.google.common.base.Strings;
 
 /**
  * Abstract properties configuration.

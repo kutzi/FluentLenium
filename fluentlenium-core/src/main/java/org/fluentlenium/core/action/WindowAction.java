@@ -1,6 +1,5 @@
 package org.fluentlenium.core.action;
 
-import com.google.common.base.Predicate;
 import org.fluentlenium.core.FluentControl;
 import org.fluentlenium.core.components.ComponentInstantiator;
 import org.fluentlenium.core.domain.FluentWebElement;
@@ -14,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import static com.google.common.collect.Iterables.getLast;
 import static com.google.common.collect.Iterables.getOnlyElement;
@@ -239,7 +239,7 @@ public class WindowAction {
         }
 
         @Override
-        public boolean apply(final FluentControl input) {
+        public boolean test(FluentControl fluentControl) {
             return WindowAction.this.driver.getWindowHandles().size() == this.expectedValue;
         }
     }

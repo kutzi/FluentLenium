@@ -1,8 +1,8 @@
 package org.fluentlenium.core.wait;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import org.fluentlenium.core.FluentControl;
 import org.fluentlenium.core.FluentPage;
 import org.fluentlenium.core.conditions.FluentConditions;
@@ -140,6 +140,11 @@ public class FluentWaitElement implements FluentWaitFunctional<FluentControl>, F
     }
 
     @Override
+    public <T> T until(com.google.common.base.Function<? super FluentControl, T> function) {
+        return controlWait.until(function);
+    }
+
+    @Override
     public FluentListConditions untilEach(final List<? extends FluentWebElement> elements) {
         return controlWait.untilEach(elements);
     }
@@ -185,5 +190,4 @@ public class FluentWaitElement implements FluentWaitFunctional<FluentControl>, F
         controlWait.explicitlyFor(amount, timeUnit);
         return this;
     }
-
 }

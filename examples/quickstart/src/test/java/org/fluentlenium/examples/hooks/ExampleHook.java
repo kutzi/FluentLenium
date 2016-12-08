@@ -1,6 +1,5 @@
 package org.fluentlenium.examples.hooks;
 
-import com.google.common.base.Supplier;
 import org.fluentlenium.core.FluentControl;
 import org.fluentlenium.core.components.ComponentInstantiator;
 import org.fluentlenium.core.hook.BaseHook;

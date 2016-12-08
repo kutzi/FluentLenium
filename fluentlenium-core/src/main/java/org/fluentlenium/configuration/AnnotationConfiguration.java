@@ -1,6 +1,5 @@
 package org.fluentlenium.configuration;
 
-import com.google.common.base.Strings;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -14,6 +13,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.base.Strings;
 
 /**
  * {@link ConfigurationProperties} based on {@link FluentConfiguration} annotation.

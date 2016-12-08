@@ -1,9 +1,7 @@
 package org.fluentlenium.core.wait;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import org.fluentlenium.core.FluentControl;
 import org.fluentlenium.core.FluentPage;
 import org.fluentlenium.core.conditions.FluentConditions;
@@ -17,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
  * A wait object wrapping default selenium {@link org.openqa.selenium.support.ui.FluentWait} object into a more
@@ -98,7 +97,7 @@ public class FluentWait
 
     @Override
     public FluentWait withMessage(final Supplier<String> message) {
-        wait.withMessage(message);
+        wait.withMessage(message::get);
         messageDefined = true;
         return this;
     }
@@ -127,15 +126,16 @@ public class FluentWait
     }
 
     @Override
-    public void untilPredicate(final Predicate<FluentControl> predicate) {
+    public void untilPredicate(Predicate<FluentControl> predicate) {
         updateWaitWithDefaultExceptions();
-        wait.until(predicate);
+        wait.<com.google.common.base.Predicate>until(predicate::test);
     }
 
     @Override
     public void until(final Supplier<Boolean> booleanSupplier) {
         updateWaitWithDefaultExceptions();
-        wait.until(new Function<Object, Boolean>() {
+
+        wait.until(new com.google.common.base.Function<Object, Boolean>() {
             public Boolean apply(final Object input) {
                 return booleanSupplier.get();
             }
@@ -147,9 +147,16 @@ public class FluentWait
     }
 
     @Override
-    public <T> T until(final Function<? super FluentControl, T> function) {
+    public <T> T until(Function<? super FluentControl, T> function) {
         updateWaitWithDefaultExceptions();
-        return wait.until(function);
+        return wait.until(function::apply);
+    }
+
+    @Override
+    @Deprecated
+    public <T> T until(com.google.common.base.Function<? super FluentControl, T> function) {
+        updateWaitWithDefaultExceptions();
+        return wait.until(function::apply);
     }
 
     @Override
@@ -162,14 +169,14 @@ public class FluentWait
     public FluentListConditions until(final List<? extends FluentWebElement> elements) {
         updateWaitWithDefaultExceptions();
         return WaitConditionProxy
-                .one(this, "Elements " + elements.toString(), Suppliers.<List<? extends FluentWebElement>>ofInstance(elements));
+                .one(this, "Elements " + elements.toString(), () -> elements);
     }
 
     @Override
     public FluentListConditions untilEach(final List<? extends FluentWebElement> elements) {
         updateWaitWithDefaultExceptions();
         return WaitConditionProxy
-                .each(this, "Elements " + elements.toString(), Suppliers.<List<? extends FluentWebElement>>ofInstance(elements));
+                .each(this, "Elements " + elements.toString(), () -> elements);
     }
 
     @Override
@@ -223,5 +230,4 @@ public class FluentWait
     public FluentWait explicitlyFor(final long amount) {
         return explicitlyFor(amount, TimeUnit.MILLISECONDS);
     }
-
 }
